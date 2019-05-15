@@ -61,7 +61,7 @@ namespace TODORepository.Class
         /// <returns>Collection of TODOs</returns>
         public IEnumerable<TODO> ListTODOs()
         {
-            return this.db.TODO.AsEnumerable();
+            return this.db.TODO;
         }
 
         /// <summary>
