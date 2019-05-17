@@ -36,11 +36,10 @@ namespace TODORepository.Class
         /// </summary>
         /// <param name="todo">Object that contains the TODO information</param>
         /// <returns>TODO Updated Object</returns>
-        public TODO DeleteTODO(int IdTodo)
+        public TODO DeleteTODO(TODO todo)
         {
-            TODO todo = this.GetTodoById(IdTodo);
-
-            this.db.Entry(todo).State = EntityState.Deleted;
+            todo.State = false;
+            this.db.Entry(todo).State = EntityState.Modified;
             this.db.SaveChanges();
             return todo;
         }
@@ -61,7 +60,7 @@ namespace TODORepository.Class
         /// <returns>Collection of TODOs</returns>
         public IEnumerable<TODO> ListTODOs()
         {
-            return this.db.TODO.AsEnumerable();
+            return this.db.TODO;
         }
 
         /// <summary>

@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.Text;
 using Domain;
 
-namespace TODORepository.Interfaces
+namespace TODOBusiness.Interfaces
 {
     /// <summary>
-    /// Interface tha define the database layer methods to realice maintanance to TODO DB
+    /// Interface tha define the business layer methods 
     /// </summary>
-    public interface ITodoRepository
+    public interface ITodoBusiness
     {
         /// <summary>
-        /// Method that create the TODO in the DataBase
+        /// Method to call the create method in repository layer
         /// </summary>
         /// <param name="todo">Object that contains the TODO information</param>
         /// <returns>TODO created Object</returns>
         TODO CreateTODO(TODO todo);
 
         /// <summary>
-        /// Method that update a existence TODO
+        /// Method to call the update method in repository layer
         /// </summary>
         /// <param name="todo">Object that contains the TODO information</param>
         /// <returns>TODO Updated Object</returns>
         TODO UpdateTODO(TODO todo);
 
         /// <summary>
-        /// Method that delete the TODO from the DataBase
+        /// Method to call the delete method in repository layer
         /// </summary>
         /// <param name="todo">TODO object to delete</param>
         /// <returns></returns>
