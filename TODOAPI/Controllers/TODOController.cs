@@ -19,8 +19,7 @@ namespace TODOAPI.Controllers
             this.todoBusiness = todoBusiness;
         }
 
-        [HttpGet]
-        [Route("api/TODO")]
+        [HttpGet("api/TODO")]
         public IActionResult GetTodos()
         {
             try
@@ -47,8 +46,7 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-        [Route("api/TODO/{idTodo}")]
+        [HttpGet("api/TODO/{idTodo}")]
         public IActionResult GetTodoById(int idTodo)
         {
             try
@@ -85,8 +83,7 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        [Route("api/TODO")]
+        [HttpPost("api/TODO")]
         public IActionResult CreateTODO(TODO todo)
         {
             try
@@ -118,8 +115,7 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
-        [Route("api/TODO")]
+        [HttpPut("api/TODO")]
         public IActionResult UpdateTODO(TODO todo)
         {
             try
@@ -151,8 +147,7 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpDelete]
-        [Route("api/TODO")]
+        [HttpDelete("api/TODO")]
         public IActionResult DeleteTODO(int idTodo)
         {
             try
