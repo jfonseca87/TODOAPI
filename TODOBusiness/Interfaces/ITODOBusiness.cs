@@ -27,9 +27,9 @@ namespace TODOBusiness.Interfaces
         /// <summary>
         /// Method to call the delete method in repository layer
         /// </summary>
-        /// <param name="IdTodo">Id number of TODO object to delete</param>
+        /// <param name="todo">TODO object to delete</param>
         /// <returns></returns>
-        TODO DeleteTODO(int idTodo);
+        TODO DeleteTODO(TODO todo);
 
         /// <summary>
         /// Method tha obtains All TODOs information from database

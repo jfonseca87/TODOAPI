@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Domain;
 using TODOBusiness.Interfaces;
 using TODORepository.Interfaces;
@@ -21,9 +19,9 @@ namespace TODOBusiness.Class
             return this.todoRepository.CreateTODO(todo);
         }
 
-        public TODO DeleteTODO(int idTodo)
+        public TODO DeleteTODO(TODO todo)
         {
-            return this.todoRepository.DeleteTODO(idTodo);
+            return this.todoRepository.DeleteTODO(todo);
         }
 
         public TODO GetTodoById(int idTodo)

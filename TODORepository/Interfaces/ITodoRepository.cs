@@ -27,9 +27,9 @@ namespace TODORepository.Interfaces
         /// <summary>
         /// Method that delete the TODO from the DataBase
         /// </summary>
-        /// <param name="IdTodo">Id number of TODO object to delete</param>
+        /// <param name="todo">TODO object to delete</param>
         /// <returns></returns>
-        TODO DeleteTODO(int idTodo);
+        TODO DeleteTODO(TODO todo);
 
         /// <summary>
         /// Method tha obtains All TODOs information from database

@@ -9,7 +9,6 @@ using System.Linq;
 namespace TODOAPI.Controllers
 {
     [ApiController]
-    
     public class TODOController : ControllerBase
     {
         private readonly ITodoBusiness todoBusiness;
@@ -30,6 +29,7 @@ namespace TODOAPI.Controllers
 
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.OK,
                     HttpResponse = HttpStatusCode.OK.ToString(),
                     SuccessfullResponse = todos
                 };
@@ -38,6 +38,7 @@ namespace TODOAPI.Controllers
             {
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.InternalServerError,
                     HttpResponse = HttpStatusCode.InternalServerError.ToString(),
                     ErrorResponse = ex.Message.ToString()
                 };
@@ -58,6 +59,7 @@ namespace TODOAPI.Controllers
                 {
                     response = new APIResponse
                     {
+                        HttpResponseNumber = (int)HttpStatusCode.NotFound,
                         HttpResponse = HttpStatusCode.NotFound.ToString(),
                         ErrorResponse = "The TODO hasn't found"
                     };
@@ -65,6 +67,7 @@ namespace TODOAPI.Controllers
 
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.OK,
                     HttpResponse = HttpStatusCode.OK.ToString(),
                     SuccessfullResponse = todo
                 };
@@ -73,6 +76,7 @@ namespace TODOAPI.Controllers
             {
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.InternalServerError,
                     HttpResponse = HttpStatusCode.InternalServerError.ToString(),
                     ErrorResponse = ex.Message.ToString()
                 };
@@ -92,18 +96,20 @@ namespace TODOAPI.Controllers
                     throw new ArgumentNullException("The todo is null", nameof(todo));
                 }
 
-                TODO todoCreated = this.todoBusiness.CreateTODO(todo);
+                this.todoBusiness.CreateTODO(todo);
 
                 response = new APIResponse
                 {
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todoCreated
+                    HttpResponseNumber = (int)HttpStatusCode.Created,
+                    HttpResponse = HttpStatusCode.Created.ToString(),
+                    SuccessfullResponse = todo
                 };
             }
             catch (Exception ex)
             {
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.InternalServerError,
                     HttpResponse = HttpStatusCode.InternalServerError.ToString(),
                     ErrorResponse = ex.Message.ToString()
                 };
@@ -123,18 +129,20 @@ namespace TODOAPI.Controllers
                     throw new ArgumentNullException("The todo is null", nameof(todo));
                 }
 
-                TODO todoUpdated = this.todoBusiness.UpdateTODO(todo);
+                this.todoBusiness.UpdateTODO(todo);
 
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.OK,
                     HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todoUpdated
+                    SuccessfullResponse = todo
                 };
             }
             catch (Exception ex)
             {
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.InternalServerError,
                     HttpResponse = HttpStatusCode.InternalServerError.ToString(),
                     ErrorResponse = ex.Message.ToString()
                 };
@@ -149,10 +157,12 @@ namespace TODOAPI.Controllers
         {
             try
             {
-                TODO todoDeleted = this.todoBusiness.DeleteTODO(idTodo);
+                TODO todoDeleted = this.todoBusiness.GetTodoById(idTodo);
+                this.todoBusiness.DeleteTODO(todoDeleted);
 
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.OK,
                     HttpResponse = HttpStatusCode.OK.ToString(),
                     SuccessfullResponse = todoDeleted
                 };
@@ -161,6 +171,7 @@ namespace TODOAPI.Controllers
             {
                 response = new APIResponse
                 {
+                    HttpResponseNumber = (int)HttpStatusCode.InternalServerError,
                     HttpResponse = HttpStatusCode.InternalServerError.ToString(),
                     ErrorResponse = ex.Message.ToString()
                 };

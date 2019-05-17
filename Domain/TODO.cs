@@ -14,5 +14,6 @@ namespace Domain
         public bool Done { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
+        public bool State { get; set; }
     }
 }

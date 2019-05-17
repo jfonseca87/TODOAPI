@@ -48,7 +48,7 @@ namespace TODOAPI
                 {
                     Version = "v1",
                     Title = "TODO API",
-                    Description = "API for users and flights register",
+                    Description = "API for TODO maintenance",
                     Contact = new Contact
                     {
                         Name = "Jorge Fonseca",
