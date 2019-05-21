@@ -53,7 +53,7 @@ namespace TODOAPI.Controllers
             {
                 TODO todo = this.todoBusiness.GetTodoById(idTodo);
 
-                if(todo == null)
+                if (todo == null)
                 {
                     response = new APIResponse
                     {
@@ -62,13 +62,16 @@ namespace TODOAPI.Controllers
                         ErrorResponse = "The TODO hasn't found"
                     };
                 }
-
-                response = new APIResponse
+                else
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todo
-                };
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todo
+                    };
+                }
+                
             }
             catch (Exception ex)
             {
@@ -153,14 +156,27 @@ namespace TODOAPI.Controllers
             try
             {
                 TODO todoDeleted = this.todoBusiness.GetTodoById(idTodo);
-                this.todoBusiness.DeleteTODO(todoDeleted);
 
-                response = new APIResponse
+                if (todoDeleted == null)
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todoDeleted
-                };
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.NotFound,
+                        HttpResponse = HttpStatusCode.NotFound.ToString(),
+                        ErrorResponse = "The TODO hasn't found"
+                    };
+                }
+                else
+                {
+                    this.todoBusiness.DeleteTODO(todoDeleted);
+
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todoDeleted
+                    };
+                }
             }
             catch (Exception ex)
             {

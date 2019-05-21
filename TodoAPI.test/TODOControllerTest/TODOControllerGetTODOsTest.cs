@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -9,8 +8,8 @@ using TODOBusiness.Interfaces;
 using Xunit;
 
 namespace TodoAPI.test.TODOControllerTest
-{    
-    public class TODOControllerGetTODOs
+{
+    public class TODOControllerGetTODOsTest
     {
         [Fact]
         public void GetTODOsCorrectFlow()
@@ -25,6 +24,21 @@ namespace TodoAPI.test.TODOControllerTest
             var viewResult = Assert.IsType<OkObjectResult>(result);
             var response = Assert.IsAssignableFrom<APIResponse>(viewResult.Value);
             Assert.Equal("OK", response.HttpResponse);
+        }
+
+        [Fact]
+        public void GetTODOsIncorrectFlow()
+        {
+            var mockBusiness = new Mock<ITodoBusiness>();
+            mockBusiness.Setup(x => x.ListTODOs()).Throws(new Exception());
+
+            TODOController todoController = new TODOController(mockBusiness.Object);
+            var result = todoController.GetTodos();
+
+            Assert.NotNull(result);
+            var viewResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsAssignableFrom<APIResponse>(viewResult.Value);
+            Assert.Equal("InternalServerError", response.HttpResponse);
         }
 
         private IEnumerable<TODO> GetTODOs()
@@ -52,6 +66,11 @@ namespace TodoAPI.test.TODOControllerTest
                     State = true
                 }
             };
+        }
+
+        private Exception GetWrongMockData()
+        {
+            throw new Exception("An error happens whe try to execute a query");
         }
     }
 }
