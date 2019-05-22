@@ -123,19 +123,33 @@ namespace TODOAPI.Controllers
         {
             try
             {
-                if (todo == null)
+                TODO todoToModify = this.todoBusiness.GetTodoById(todo != null ? todo.IdTODO : 0);
+
+                if (todoToModify == null)
                 {
-                    throw new ArgumentNullException("The todo is null", nameof(todo));
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.NotFound,
+                        HttpResponse = HttpStatusCode.NotFound.ToString(),
+                        ErrorResponse = "The TODO hasn't found"
+                    };
                 }
-
-                this.todoBusiness.UpdateTODO(todo);
-
-                response = new APIResponse
+                else
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todo
-                };
+                    todoToModify.Title = todo.Title;
+                    todoToModify.Description = todo.Description;
+                    todoToModify.Done = todo.Done;
+                    todoToModify.LastModificationDate = DateTime.Now;
+
+                    this.todoBusiness.UpdateTODO(todoToModify);
+
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todo
+                    };
+                }
             }
             catch (Exception ex)
             {
