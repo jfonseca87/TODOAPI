@@ -19,8 +19,7 @@ namespace TODOAPI.Controllers
             this.todoBusiness = todoBusiness;
         }
 
-        [HttpGet]
-        [Route("api/TODO")]
+        [HttpGet("api/TODO")]
         public IActionResult GetTodos()
         {
             try
@@ -47,15 +46,14 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-        [Route("api/TODO/{idTodo}")]
+        [HttpGet("api/TODO/{idTodo}")]
         public IActionResult GetTodoById(int idTodo)
         {
             try
             {
                 TODO todo = this.todoBusiness.GetTodoById(idTodo);
 
-                if(todo == null)
+                if (todo == null)
                 {
                     response = new APIResponse
                     {
@@ -64,13 +62,16 @@ namespace TODOAPI.Controllers
                         ErrorResponse = "The TODO hasn't found"
                     };
                 }
-
-                response = new APIResponse
+                else
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todo
-                };
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todo
+                    };
+                }
+                
             }
             catch (Exception ex)
             {
@@ -85,8 +86,7 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        [Route("api/TODO")]
+        [HttpPost("api/TODO")]
         public IActionResult CreateTODO(TODO todo)
         {
             try
@@ -118,25 +118,38 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
-        [Route("api/TODO")]
+        [HttpPut("api/TODO")]
         public IActionResult UpdateTODO(TODO todo)
         {
             try
             {
-                if (todo == null)
+                TODO todoToModify = this.todoBusiness.GetTodoById(todo != null ? todo.IdTODO : 0);
+
+                if (todoToModify == null)
                 {
-                    throw new ArgumentNullException("The todo is null", nameof(todo));
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.NotFound,
+                        HttpResponse = HttpStatusCode.NotFound.ToString(),
+                        ErrorResponse = "The TODO hasn't found"
+                    };
                 }
-
-                this.todoBusiness.UpdateTODO(todo);
-
-                response = new APIResponse
+                else
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todo
-                };
+                    todoToModify.Title = todo.Title;
+                    todoToModify.Description = todo.Description;
+                    todoToModify.Done = todo.Done;
+                    todoToModify.LastModificationDate = DateTime.Now;
+
+                    this.todoBusiness.UpdateTODO(todoToModify);
+
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todo
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -151,21 +164,33 @@ namespace TODOAPI.Controllers
             return Ok(response);
         }
 
-        [HttpDelete]
-        [Route("api/TODO")]
+        [HttpDelete("api/TODO")]
         public IActionResult DeleteTODO(int idTodo)
         {
             try
             {
                 TODO todoDeleted = this.todoBusiness.GetTodoById(idTodo);
-                this.todoBusiness.DeleteTODO(todoDeleted);
 
-                response = new APIResponse
+                if (todoDeleted == null)
                 {
-                    HttpResponseNumber = (int)HttpStatusCode.OK,
-                    HttpResponse = HttpStatusCode.OK.ToString(),
-                    SuccessfullResponse = todoDeleted
-                };
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.NotFound,
+                        HttpResponse = HttpStatusCode.NotFound.ToString(),
+                        ErrorResponse = "The TODO hasn't found"
+                    };
+                }
+                else
+                {
+                    this.todoBusiness.DeleteTODO(todoDeleted);
+
+                    response = new APIResponse
+                    {
+                        HttpResponseNumber = (int)HttpStatusCode.OK,
+                        HttpResponse = HttpStatusCode.OK.ToString(),
+                        SuccessfullResponse = todoDeleted
+                    };
+                }
             }
             catch (Exception ex)
             {

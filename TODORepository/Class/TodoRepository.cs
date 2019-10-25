@@ -70,16 +70,9 @@ namespace TODORepository.Class
         /// <returns>TODO Object result</returns>
         public TODO UpdateTODO(TODO todo)
         {
-            TODO todoToModify = this.GetTodoById(todo.IdTODO);
-
-            todoToModify.Title = todo.Title;
-            todoToModify.Description = todo.Description;
-            todoToModify.Done = todo.Done;
-            todoToModify.LastModificationDate = DateTime.Now;
-
-            this.db.Entry(todoToModify).State = EntityState.Modified;
+            this.db.Entry(todo).State = EntityState.Modified;
             this.db.SaveChanges();
-            return todoToModify;
+            return todo;
         }
     }
 }
